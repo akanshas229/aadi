@@ -41,7 +41,6 @@ class ProductSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
         
-    
 class ProductReviewSerializer(serializers.ModelSerializer):
     product = ProductCategorySerializer()
     user = UserSerializer()
@@ -68,6 +67,34 @@ class ProductReviewSerializer(serializers.ModelSerializer):
         instance.comment = validated_data.get('comment', instance.comment)
         instance.save()
         return instance()
+     
+
+# class ProductReviewSerializer(serializers.ModelSerializer):
+#     product = ProductCategorySerializer()
+#     user = UserSerializer()
+#     class Meta:
+#         model = ProductReview
+#         fields = ['id','product', 'user', 'rating', 'comment', 'created_at', 'updated_at']
+
+#     def create(self, validated_data):
+#         product_data = validated_data.pop('product')
+#         user_data = validated_data.pop('user')
+#         product_instance, _ = Product.objects.get_or_create(**product_data)
+#         user_instance, _ = User.objects.get_or_create(**user_data)
+#         review = ProductReview.objects.create(product=product_instance, user=user_instance, **validated_data)
+#         return review
+    
+#     def update(self, instance, validated_data):
+#         product_data = validated_data.pop('product')
+#         user_data = validated_data.pop('user')
+#         product_instance, _ = Product.objects.get_or_create(**product_data)
+#         user_instance, _ = User.objects.get_or_create(**user_data)
+#         instance.product = product_instance
+#         instance.user = user_instance
+#         instance.rating = validated_data.get('rating', instance.rating)
+#         instance.comment = validated_data.get('comment', instance.comment)
+#         instance.save()
+#         return instance()
     
 class ProductVariantSerializer(serializers.ModelSerializer):
     product = ProductSerializer()
