@@ -3,7 +3,7 @@ from .models import  Order, OrderHistory, OrderItem, OrderStatus
 from clients.serializers import ClientProfileSerializer
 from clients.models import ClientProfile
 from product.models import Product
-# from product.serializers import ProductSerializer
+from product.serializers import ProductSerializer
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -53,34 +53,34 @@ class OrderHistorySerializer(serializers.ModelSerializer):
     
 
 
-# class OrderItemSerializer(serializers.ModelSerializer):
-#     order = OrderSerializer()
-#     product = ProductSerializer()
-#     class Meta:
-#         model = OrderItem
-#         fields = ['id', 'order', 'product', 'quantity', 'price', 'total_price']
+class OrderItemSerializer(serializers.ModelSerializer):
+    order = OrderSerializer()
+    product = ProductSerializer()
+    class Meta:
+        model = OrderItem
+        fields = ['id', 'order', 'product', 'quantity', 'price', 'total_price']
 
-#     def create(self, validated_data):
-#         order_data = validated_data.pop('order')
-#         product_data = validated_data.pop('product')
-#         orders = Order.objects.create(**order_data)
-#         products = Product.objects.create(**product_data)
-#         order_item = OrderItem.objects.create(order=orders, product = products, **validated_data)
+    def create(self, validated_data):
+        order_data = validated_data.pop('order')
+        product_data = validated_data.pop('product')
+        orders = Order.objects.create(**order_data)
+        products = Product.objects.create(**product_data)
+        order_item = OrderItem.objects.create(order=orders, product = products, **validated_data)
 
-#         return order_item
+        return order_item
     
-    # def update(self, instance, validated_data):
-    #     order_data = validated_data.pop('order')
-    #     product_data = validated_data.pop('product')
-    #     order_instance, _ = Order.objects.get_or_create(**order_data)
-    #     product_instance, _ = Product.objects.get_or_create(**product_data)
-    #     instance.order = order_instance
-    #     instance.product = product_instance
-    #     instance.quantity = validated_data.get('quantity', instance.quantity)
-    #     instance.price = validated_data.get('price', instance.price)
-    #     instance.total_price = validated_data.get('total_price', instance.total_price)
-    #     instance.save()
-    #     return instance
+    def update(self, instance, validated_data):
+        order_data = validated_data.pop('order')
+        product_data = validated_data.pop('product')
+        order_instance, _ = Order.objects.get_or_create(**order_data)
+        product_instance, _ = Product.objects.get_or_create(**product_data)
+        instance.order = order_instance
+        instance.product = product_instance
+        instance.quantity = validated_data.get('quantity', instance.quantity)
+        instance.price = validated_data.get('price', instance.price)
+        instance.total_price = validated_data.get('total_price', instance.total_price)
+        instance.save()
+        return instance
     
 class OrderStatusSerialize(serializers.ModelSerializer):
     order = OrderSerializer()

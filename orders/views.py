@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .serializers import OrderSerializer, OrderHistorySerializer, OrderItemSerializer
+from .serializers import OrderSerializer, OrderHistorySerializer, OrderItemSerializer, OrderStatusSerialize
 from .models import Order, OrderHistory, OrderItem, OrderStatus
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
@@ -22,4 +22,7 @@ class OrderItemViewSet(viewsets.ModelViewSet):
     serializer_class = OrderItemSerializer
     permission_classes = [IsAuthenticated]
 
-    
+class OrderStatusViewSet(viewsets.ModelViewSet):
+    queryset = OrderStatus.objects.all()
+    serializer_class = OrderStatusSerialize
+    permission_classes = [IsAuthenticated]
